@@ -16,18 +16,12 @@ import android.view.View;
 public class MyView extends View {
 
     private Paint paint;
-    private Paint linePaint;
 
     private Path path;
-
-    private Path pathLeft;
-    private Path pathRight;
 
 
     private float pointAX=200;
     private float pointAY=200;
-    private float pointBX=600;
-    private float pointBY=200;
     private float pointCX=600;
     private float pointCY=600;
 
@@ -52,18 +46,11 @@ public class MyView extends View {
         paint=new Paint();
         paint.setAntiAlias(true);
         paint.setColor(Color.RED);
-        paint.setStyle(Paint.Style.STROKE);
+        paint.setStyle(Paint.Style.FILL_AND_STROKE);
         paint.setStrokeWidth(2);
 
-        linePaint=new Paint();
-        linePaint.setStyle(Paint.Style.STROKE);
-        linePaint.setAntiAlias(true);
-        linePaint.setColor(Color.BLACK);
-        linePaint.setStrokeWidth(5);
 
         path=new Path();
-        path.moveTo(pointAX,pointAY);
-        path.quadTo(pointBX,pointBY,pointCX,pointCY);
 
         pointCX=pointAX;
         pointCY=pointAY;
@@ -74,8 +61,6 @@ public class MyView extends View {
         p4=new P();
         p5=new P();
 
-        pathLeft=new Path();
-        pathRight=new Path();
 
     }
 
@@ -84,15 +69,10 @@ public class MyView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawColor(Color.WHITE);
-
         canvas.drawCircle(pointAX,pointAY,100,paint);
-//        canvas.drawCircle(pointBX,pointBY,5,paint);
         canvas.drawCircle(pointCX,pointCY,100,paint);
 
-//        canvas.drawLine(pointAX,pointAY,pointBX,pointBY,paint);
-//        canvas.drawLine(pointBX,pointBY,pointCX,pointCY,paint);
-        canvas.drawLine(pointAX,pointAY,pointCX,pointCY,paint);
+//        canvas.drawLine(pointAX,pointAY,pointCX,pointCY,paint);
 
         //坐标
 //        canvas.drawLine(pointAX-200,pointAY,pointAX+200,pointAY,paint);
@@ -101,19 +81,17 @@ public class MyView extends View {
 //        canvas.drawLine(pointCX,pointCY-200,pointCX,pointCY+200,paint);
 
         //连个圆心连线的垂直线
-        if(p1.X>0&&p1.Y>0)
-            canvas.drawLine(pointAX,pointAY,p1.X,p1.Y,paint);
-        if(p2.X>0&&p2.Y>0)
-            canvas.drawLine(pointAX,pointAY,p2.X,p2.Y,paint);
-        if(p3.X>0&&p3.Y>0)
-            canvas.drawLine(pointCX,pointCY,p3.X,p3.Y,paint);
-        if(p4.X>0&&p4.Y>0)
-            canvas.drawLine(pointCX,pointCY,p4.X,p4.Y,paint);
+//        if(p1.X>0&&p1.Y>0)
+//            canvas.drawLine(pointAX,pointAY,p1.X,p1.Y,paint);
+//        if(p2.X>0&&p2.Y>0)
+//            canvas.drawLine(pointAX,pointAY,p2.X,p2.Y,paint);
+//        if(p3.X>0&&p3.Y>0)
+//            canvas.drawLine(pointCX,pointCY,p3.X,p3.Y,paint);
+//        if(p4.X>0&&p4.Y>0)
+//            canvas.drawLine(pointCX,pointCY,p4.X,p4.Y,paint);
 
         //绘制贝塞尔曲线
-        canvas.drawPath(pathLeft,linePaint);
-//        canvas.drawPath(pathRight,linePaint);
-
+        canvas.drawPath(path,paint);
 
     }
 
@@ -141,9 +119,10 @@ public class MyView extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 downEnable=false;
-//                pointCX=pointAX;
-//                pointCY=pointAY;
-//                postInvalidate();
+                pointCX=pointAX;
+                pointCY=pointAY;
+                path.reset();
+                postInvalidate();
                 break;
         }
 
@@ -171,11 +150,12 @@ public class MyView extends View {
         p5.X=(pax+pbx)/2;
         p5.Y=(pay+pby)/2;
 
-        pathLeft.moveTo(p1.X,p1.Y);
-        pathLeft.quadTo(p5.X,p5.Y,p3.X,p3.Y);
-
-        pathRight.moveTo(p2.X,p2.Y);
-        pathRight.quadTo(p5.X,p5.Y,p4.X,p4.Y);
+        path.reset();
+        path.moveTo(p1.X,p1.Y);
+        path.quadTo(p5.X,p5.Y,p3.X,p3.Y);
+        path.lineTo(p4.X,p4.Y);
+        path.quadTo(p5.X,p5.Y,p2.X,p2.Y);
+        path.lineTo(p1.X,p1.Y);
 
     }
 }
