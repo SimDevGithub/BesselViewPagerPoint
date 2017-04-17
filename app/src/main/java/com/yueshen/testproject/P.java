@@ -8,5 +8,6 @@ public class P {
 
     public float X;
     public float Y;
+    public float radius;
 
 }

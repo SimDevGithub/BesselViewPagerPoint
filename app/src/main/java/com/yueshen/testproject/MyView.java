@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -26,6 +27,10 @@ public class MyView extends View {
     private float pointCY=600;
 
     private P p1,p2,p3,p4,p5;
+
+    private double circleDistance;
+
+    private double maxDistance=600;
 
     public MyView(Context context) {
         super(context);
@@ -68,6 +73,7 @@ public class MyView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        Log.e("TAG","宽度："+canvas.getWidth());
 
         canvas.drawCircle(pointAX,pointAY,100,paint);
         canvas.drawCircle(pointCX,pointCY,100,paint);
@@ -80,7 +86,7 @@ public class MyView extends View {
 //        canvas.drawLine(pointCX-200,pointCY,pointCX+200,pointCY,paint);
 //        canvas.drawLine(pointCX,pointCY-200,pointCX,pointCY+200,paint);
 
-        //连个圆心连线的垂直线
+        //两个圆心连线的垂直线
 //        if(p1.X>0&&p1.Y>0)
 //            canvas.drawLine(pointAX,pointAY,p1.X,p1.Y,paint);
 //        if(p2.X>0&&p2.Y>0)
@@ -111,9 +117,9 @@ public class MyView extends View {
                 break;
             case MotionEvent.ACTION_MOVE:
                 if(downEnable){
-                    Calculation(pointAX,pointAY,pointCX,pointCY);
                     pointCX=event.getX();
                     pointCY=event.getY();
+                    Calculation(pointAX,pointAY,pointCX,pointCY);
                     postInvalidate();
                 }
                 break;
@@ -150,12 +156,17 @@ public class MyView extends View {
         p5.X=(pax+pbx)/2;
         p5.Y=(pay+pby)/2;
 
-        path.reset();
-        path.moveTo(p1.X,p1.Y);
-        path.quadTo(p5.X,p5.Y,p3.X,p3.Y);
-        path.lineTo(p4.X,p4.Y);
-        path.quadTo(p5.X,p5.Y,p2.X,p2.Y);
-        path.lineTo(p1.X,p1.Y);
+        circleDistance=Math.abs(Math.sqrt(Math.pow(pax-pbx,2)+Math.pow(pay-pby,2)));
 
+        path.reset();
+        if(circleDistance>maxDistance){
+
+        }else {
+            path.moveTo(p1.X,p1.Y);
+            path.quadTo(p5.X,p5.Y,p3.X,p3.Y);
+            path.lineTo(p4.X,p4.Y);
+            path.quadTo(p5.X,p5.Y,p2.X,p2.Y);
+            path.lineTo(p1.X,p1.Y);
+        }
     }
 }
