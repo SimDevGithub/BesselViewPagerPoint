@@ -1,11 +1,9 @@
 package com.yueshen.testproject;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
@@ -32,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
         pagerAdapter=new MyPagerAdapter(getSupportFragmentManager(),fragments);
         viewPager.setAdapter(pagerAdapter);
         myViewPager=new MyViewPager(this);
-        myViewPager.setDefaultMarginBottom(50);
-        myViewPager.setBottomTabWidth(400);
+        myViewPager.setBottomMargin(50);
+        myViewPager.setBottomWidth(400);
         myViewPager.setPointRadius(15);
         myViewPager.setViewPager(viewPager);
         myViewPager.create();

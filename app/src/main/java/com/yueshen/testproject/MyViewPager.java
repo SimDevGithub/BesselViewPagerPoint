@@ -47,11 +47,11 @@ public class MyViewPager extends FrameLayout implements ViewPager.OnPageChangeLi
         viewPagerPoint.setCircleRadius(radius);
     }
 
-    public void setBottomTabWidth(int bottomWidth) {
+    public void setBottomWidth(int bottomWidth) {
         defaultBottomWidth = bottomWidth;
     }
 
-    public void setDefaultMarginBottom(int marginBottom) {
+    public void setBottomMargin(int marginBottom) {
         this.defaultMarginBottom = marginBottom;
     }
 
