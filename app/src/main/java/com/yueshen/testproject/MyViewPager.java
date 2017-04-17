@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -19,8 +18,6 @@ public class MyViewPager extends FrameLayout implements ViewPager.OnPageChangeLi
     private ViewPagerPoint viewPagerPoint;
     //单次最大移动量
     private int maxOffset;
-    //默认point半径
-    private int defaultPointRadius = 10;
     //默认底部高度
     private int defaultBottomWidth = 400;
     //默认距离底部的距离
@@ -47,7 +44,7 @@ public class MyViewPager extends FrameLayout implements ViewPager.OnPageChangeLi
     }
 
     public void setPointRadius(int radius) {
-        defaultPointRadius = radius;
+        viewPagerPoint.setCircleRadius(radius);
     }
 
     public void setBottomTabWidth(int bottomWidth) {
@@ -60,6 +57,18 @@ public class MyViewPager extends FrameLayout implements ViewPager.OnPageChangeLi
 
     public void setViewPager(ViewPager viewPager) {
         this.viewPager = viewPager;
+    }
+
+    public void setOffSet(int offSet) {
+        viewPagerPoint.setOffSet(offSet);
+    }
+
+    public void setSelectColor(int selectColor) {
+        viewPagerPoint.setSelectColor(selectColor);
+    }
+
+    public void setNormalColor(int normalColor) {
+        viewPagerPoint.setNormalColor(normalColor);
     }
 
     public void create() {
@@ -81,12 +90,10 @@ public class MyViewPager extends FrameLayout implements ViewPager.OnPageChangeLi
             int count = pagerAdapter.getCount();
             viewPagerPoint.setCount(count);
         }
-        viewPagerPoint.setCircleRadius(defaultPointRadius);
         LayoutParams layoutParams = new LayoutParams(defaultBottomWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         layoutParams.bottomMargin = defaultMarginBottom;
         addView(viewPagerPoint, layoutParams);
-
     }
 
     @Override

@@ -7,8 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -31,8 +29,8 @@ public class ViewPagerPoint extends View {
     private Paint paint;//画笔
     private Path path;//绘制的路径
 
-    private int selectColor=0x8ad7ff;
-    private int normalColor=0xcaedff;
+    private int selectColor = Color.parseColor("#8ad7ff");
+    private int normalColor = Color.parseColor("#caedff");
 
     private ArrayList<CirclePoint> circlePoints;//定点圆点的集合
     private P p1, p2, p3, p4, p5;//坐标点实例
@@ -94,6 +92,14 @@ public class ViewPagerPoint extends View {
         this.offSet = offSet;
     }
 
+    public void setSelectColor(int selectColor) {
+        this.selectColor = selectColor;
+    }
+
+    public void setNormalColor(int normalColor) {
+        this.normalColor = normalColor;
+    }
+
     public void setTranslateX(int x) {
         if (animCirclePoint != null && animCirclePoint.getP() != null) {
             animCirclePoint.getP().X = x / scale + itemCenter + circleRadius;
@@ -107,11 +113,15 @@ public class ViewPagerPoint extends View {
         super.onDraw(canvas);
         if (circlePoints == null || circlePoints.size() <= 0) return;
         //绘制每个圆
-        for (CirclePoint circlePoint : circlePoints) {
-            circlePoint.onDraw(canvas);
+        for (int i = 0; i < circlePoints.size(); i++) {
+            if (currentIndex == i) {
+                circlePoints.get(i).onDraw(canvas, selectColor);
+            } else {
+                circlePoints.get(i).onDraw(canvas, normalColor);
+            }
         }
         //绘制移动的圆
-        animCirclePoint.onDraw(canvas);
+        animCirclePoint.onDraw(canvas, selectColor);
         //计算Path路径
         CalculationData();
         //绘制Path路径
@@ -133,6 +143,7 @@ public class ViewPagerPoint extends View {
             itemWidth = ViewWidth / count;
             scale = (float) ScreenWidth / (float) itemWidth;
             itemCenter = itemWidth / 2;
+            circlePoints.clear();
             for (int i = 0; i < count; i++) {
                 CirclePoint circlePoint = new CirclePoint();
                 P p = new P();
@@ -140,16 +151,15 @@ public class ViewPagerPoint extends View {
                 p.Y = pointY;
                 p.radius = circleRadius;
                 circlePoint.setP(p);
-                circlePoint.setPaint(paint);
                 circlePoints.add(circlePoint);
             }
             animP.X = itemCenter + circleRadius;
             animP.Y = pointY;
             animP.radius = circleRadius;
             animCirclePoint.setP(animP);
-            animCirclePoint.setPaint(paint);
         }
     }
+
 
     //计算贝塞尔曲线路径
     private void CalculationData() {
@@ -229,7 +239,7 @@ public class ViewPagerPoint extends View {
     private void initPaint() {
         paint = new Paint();
         paint.setAntiAlias(true);
-        paint.setColor(Color.argb(255, 90, 90, 90));
+        paint.setColor(selectColor);
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
         paint.setStrokeWidth(2);
     }

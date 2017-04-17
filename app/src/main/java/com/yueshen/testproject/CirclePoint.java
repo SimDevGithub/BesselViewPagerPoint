@@ -12,8 +12,8 @@ public class CirclePoint {
     private P p;
     private Paint paint;
 
-    public void setPaint(Paint paint) {
-        this.paint = paint;
+    public CirclePoint() {
+        initPaint();
     }
 
     public void setP(P p) {
@@ -24,17 +24,19 @@ public class CirclePoint {
         return p;
     }
 
-    public void onDraw(Canvas canvas) {
-        if (p == null) return;
-        if (paint == null) return;
-        canvas.drawCircle(p.X, p.Y, p.radius, paint);
-    }
 
     public void onDraw(Canvas canvas, int color) {
         if (p == null) return;
-        if (paint == null) return;
         paint.setColor(color);
         canvas.drawCircle(p.X, p.Y, p.radius, paint);
+    }
+
+    //初始化画笔
+    private void initPaint() {
+        paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.FILL_AND_STROKE);
+        paint.setStrokeWidth(2);
     }
 
 }
