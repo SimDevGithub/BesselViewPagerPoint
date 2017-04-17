@@ -181,10 +181,9 @@ public class ViewPagerPoint extends View {
             CalculationBezierPath();
         } else if (circleDistance > itemCenter - offSet && circleDistance < itemCenter + offSet) {
             //取消绘制贝塞尔曲线
-
         } else if (circleDistance >= itemCenter + offSet) {
             //切换下一个圆，以此圆为基础计算Path路径，然后绘制
-            if (currentIndex < circlePoints.size() - 1) {
+            if (currentIndex <= circlePoints.size() - 1) {
                 if (pax > pbx) {//动圆位于当前圆的左侧
                     currentIndex = currentIndex - 1;
                 } else {//动圆位于当前圆的右侧
